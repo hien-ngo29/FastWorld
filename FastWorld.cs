@@ -21,9 +21,18 @@ namespace FastWorld
         {
             Log("Initializing");
 
-            
+            On.HeroController.Start += HeroAwake;
 
             Log("Initialized");
+        }
+
+        private void HeroAwake(On.HeroController.orig_Start orig, HeroController self)
+        {
+            orig(self);
+            if (self.gameObject.GetComponent<KnightSpeedScaler>() == null)
+            {
+                KnightSpeedScaler speedScaler = self.gameObject.AddComponent<KnightSpeedScaler>();
+            }
         }
     }
 }

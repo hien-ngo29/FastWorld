@@ -62,6 +62,9 @@
     <!-- Exec Command="steam steam://rungameid/367520" / -->
   </Target>
   <ItemGroup>
+    <Reference Include="HKMirror">
+      <HintPath>$(LocalRefs)/Mods/HKMirror/HKMirror.dll</HintPath>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(LocalRefs)/Assembly-CSharp.dll</HintPath>
     </Reference>
