@@ -65,6 +65,9 @@
     <Reference Include="HKMirror">
       <HintPath>$(LocalRefs)/Mods/HKMirror/HKMirror.dll</HintPath>
     </Reference>
+    <Reference Include="Satchel">
+      <HintPath>$(LocalRefs)/Mods/Satchel/Satchel.dll</HintPath>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(LocalRefs)/Assembly-CSharp.dll</HintPath>
     </Reference>

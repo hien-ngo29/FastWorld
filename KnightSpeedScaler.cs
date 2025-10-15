@@ -5,6 +5,9 @@ using HKMirror.Hooks.ILHooks;
 using MonoMod.Cil;
 using UnityEngine.Windows.Speech;
 using System;
+using Satchel;
+using Satchel.Futils;
+using HutongGames.PlayMaker;
 
 namespace FastWorld
 {
@@ -96,11 +99,23 @@ namespace FastWorld
 
         void Update()
         {
-            
+            ChangeFireballSpeed("Fireball Top");
+            ChangeFireballSpeed("Fireball2 Top");
+
             if (rb.gravityScale != (float)(0.79*(speedScale*speedScale)) && rb.gravityScale != 0)
             {
                 rb.gravityScale = (float)(0.79*(speedScale*speedScale));
                 hc.DEFAULT_GRAVITY =  (float)(0.79*(speedScale*speedScale));
+            }
+        }
+
+        private void ChangeFireballSpeed(string fireballName)
+        {
+            var fireballShadeGO = GameObject.Find(fireballName);
+            if (fireballShadeGO != null)
+            {
+                var fireballShadeFsm = fireballShadeGO.LocateMyFSM("Fireball Cast");
+                fireballShadeFsm.GetVariable<FsmFloat>("Fire Speed").Value = fireballShadeFsm.GetVariable<FsmFloat>("Fire Speed").Value * speedScale;
             }
         }
     }
