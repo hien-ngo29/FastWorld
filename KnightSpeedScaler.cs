@@ -8,13 +8,15 @@ using System;
 using Satchel;
 using Satchel.Futils;
 using HutongGames.PlayMaker;
+using HutongGames.PlayMaker.Actions;
 
 namespace FastWorld
 {
     public class KnightSpeedScaler : MonoBehaviour
     {
-        private float speedScale = (float)(1 / 1.5);
+        private float speedScale = (float)(1 / 1.5f);
         private HeroController hc = HeroController.instance;
+        private PlayMakerFSM spellFsm;
         private Rigidbody2D rb;
 
         private Vector2 previousPos;
@@ -31,13 +33,10 @@ namespace FastWorld
                 clip.fps *= speedScale;   // Halve the FPS
             }
 
-            ChangeSpeedValueOfSpell("Time Per MP Drain", 1 / speedScale);
-            ChangeSpeedValueOfSpell("Time Per MP Drain CH", 1 / speedScale);
-            ChangeSpeedValueOfSpell("Time Per MP Drain UnCH", 1 / speedScale);
-            ChangeSpeedValueOfSpell("Focus Start Time", 1 / speedScale);
-            ChangeSpeedValueOfSpell("Grace Time", 1 / speedScale);
+            spellFsm = hc.gameObject.LocateMyFSM("Spell Control");
 
-            ChangeSpeedValueOfSpell("Slug Speed R", speedScale);
+            ChangeQuakeSpeed();
+            ChangeHealingSpeed();
 
             // hc.UNDERWATER_GRAVITY *= 0.5f;
 
@@ -117,6 +116,28 @@ namespace FastWorld
             }
         }
 
+        private void ChangeQuakeSpeed()
+        {
+            spellFsm.GetAction<SetFloatValue>("Q On Ground", 0).floatValue = 11 * speedScale;
+            
+            spellFsm.GetAction<SetVelocity2d>("Quake1 Down", 6).y = -50f * speedScale;
+            spellFsm.GetAction<SetVelocity2d>("Quake2 Down", 6).y = -50f * speedScale;
+
+            spellFsm.GetAction<Wait>("Quake1 Land", 15).time = 0.75f / speedScale;
+            spellFsm.GetAction<Wait>("Q2 Land", 14).time = 0.75f / speedScale;
+        }
+
+        private void ChangeHealingSpeed()
+        {
+            ChangeSpeedValueOfSpell("Time Per MP Drain", 1 / speedScale);
+            ChangeSpeedValueOfSpell("Time Per MP Drain CH", 1 / speedScale);
+            ChangeSpeedValueOfSpell("Time Per MP Drain UnCH", 1 / speedScale);
+            ChangeSpeedValueOfSpell("Focus Start Time", 1 / speedScale);
+            ChangeSpeedValueOfSpell("Grace Time", 1 / speedScale);
+
+            ChangeSpeedValueOfSpell("Slug Speed R", speedScale);
+        }
+
         private void ChangeFireballSpeed(string fireballName)
         {
             var fireballGO = GameObject.Find(fireballName);
@@ -129,7 +150,6 @@ namespace FastWorld
 
         private void ChangeSpeedValueOfSpell(string varName, float scale)
         {
-            var spellFsm = hc.gameObject.LocateMyFSM("Spell Control");
             spellFsm.GetVariable<FsmFloat>(varName).Value = spellFsm.GetVariable<FsmFloat>(varName).Value * scale;
         }
     }
