@@ -31,6 +31,14 @@ namespace FastWorld
                 clip.fps *= speedScale;   // Halve the FPS
             }
 
+            ChangeSpeedValueOfSpell("Time Per MP Drain", 1 / speedScale);
+            ChangeSpeedValueOfSpell("Time Per MP Drain CH", 1 / speedScale);
+            ChangeSpeedValueOfSpell("Time Per MP Drain UnCH", 1 / speedScale);
+            ChangeSpeedValueOfSpell("Focus Start Time", 1 / speedScale);
+            ChangeSpeedValueOfSpell("Grace Time", 1 / speedScale);
+
+            ChangeSpeedValueOfSpell("Slug Speed R", speedScale);
+
             // hc.UNDERWATER_GRAVITY *= 0.5f;
 
             hc.RUN_SPEED *= speedScale;
@@ -111,12 +119,18 @@ namespace FastWorld
 
         private void ChangeFireballSpeed(string fireballName)
         {
-            var fireballShadeGO = GameObject.Find(fireballName);
-            if (fireballShadeGO != null)
+            var fireballGO = GameObject.Find(fireballName);
+            if (fireballGO != null)
             {
-                var fireballShadeFsm = fireballShadeGO.LocateMyFSM("Fireball Cast");
-                fireballShadeFsm.GetVariable<FsmFloat>("Fire Speed").Value = fireballShadeFsm.GetVariable<FsmFloat>("Fire Speed").Value * speedScale;
+                var fireballFsm = fireballGO.LocateMyFSM("Fireball Cast");
+                fireballFsm.GetVariable<FsmFloat>("Fire Speed").Value = fireballFsm.GetVariable<FsmFloat>("Fire Speed").Value * speedScale;
             }
+        }
+
+        private void ChangeSpeedValueOfSpell(string varName, float scale)
+        {
+            var spellFsm = hc.gameObject.LocateMyFSM("Spell Control");
+            spellFsm.GetVariable<FsmFloat>(varName).Value = spellFsm.GetVariable<FsmFloat>(varName).Value * scale;
         }
     }
 }
