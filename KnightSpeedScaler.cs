@@ -17,6 +17,7 @@ namespace FastWorld
     {
         private HeroController hc = HeroController.instance;
         private PlayMakerFSM spellFsm;
+        private PlayMakerFSM shadowRechargeFsm;
         private Rigidbody2D rb;
 
         private Vector2 previousPos;
@@ -24,20 +25,17 @@ namespace FastWorld
         void Start()
         {
             rb = hc.gameObject.GetComponent<Rigidbody2D>();
-
-            
-            // ChangeTk2dAnimationFps(hc.gameObject);
-            // ChangeFpsForAllSpellObjects();
-
             HeroAnimationFpsManager fpsManager = new();
 
             spellFsm = hc.gameObject.LocateMyFSM("Spell Control");
 
+            shadowRechargeFsm = hc.shadowRechargePrefab.gameObject.LocateMyFSM("Recharge Effect");
+            shadowRechargeFsm.GetVariable<FsmFloat>("Shadow Recharge Time").Value = 1.5f / FastWorld.KnightSlowness;
+            shadowRechargeFsm.GetAction<FloatSubtract>("Init", 2).subtract = 0.85f / FastWorld.KnightSlowness;
+
             ChangeScreamSpeed();
             ChangeQuakeSpeed();
             ChangeHealingSpeed();
-
-            // hc.UNDERWATER_GRAVITY *= 0.5f;
 
             hc.RUN_SPEED *= FastWorld.KnightSlowness;
             hc.RUN_SPEED_CH *= FastWorld.KnightSlowness;
@@ -129,11 +127,6 @@ namespace FastWorld
                 Modding.Logger.Log(childObj.name);
                 ChangeTk2dAnimationFps(childObj);
             }
-        }
-
-        private void ChangeFpsSpeedForSpellsAnimation()
-        {
-            
         }
 
         private void ChangeTk2dAnimationFps(GameObject go, float defaultValue = -1)

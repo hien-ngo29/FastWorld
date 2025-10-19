@@ -6,18 +6,13 @@ namespace FastWorld
     public class HeroAnimationFpsManager
     {
         private AnimationFpsChanger movementAnimation;
-        private List<AnimationFpsChanger> spellAnimations;
+        private AnimationGroupFpsChanger spellAnimationGroupFspChanger;
+        private AnimationGroupFpsChanger effectsAnimationGroupFspChanger;
 
         public HeroAnimationFpsManager()
         {
-            spellAnimations = new List<AnimationFpsChanger>();
-            foreach (Transform child in GameObject.Find("Spells").transform)
-            {
-                Modding.Logger.Log("GameObject: " + child.gameObject.name);
-                if (child.gameObject.GetComponent<tk2dSpriteAnimator>() != null)
-                    spellAnimations.Add(new AnimationFpsChanger(child.gameObject));
-            }
-
+            spellAnimationGroupFspChanger = new("Spells");
+            effectsAnimationGroupFspChanger = new("Effects");
             movementAnimation = new("Knight");
 
             ReloadFps();
@@ -26,10 +21,8 @@ namespace FastWorld
         public void ReloadFps()
         {
             movementAnimation.ReloadFps();
-            foreach (var animation in spellAnimations)
-            {
-                animation.ReloadFps();
-            }
+            spellAnimationGroupFspChanger.ReloadFps();
+            effectsAnimationGroupFspChanger.ReloadFps();
         }
     }
 }
