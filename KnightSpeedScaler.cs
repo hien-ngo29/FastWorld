@@ -9,32 +9,33 @@ using Satchel;
 using Satchel.Futils;
 using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
+using System.Security.Cryptography;
+using HKMirror.Reflection.InstanceClasses;
 
 namespace FastWorld
 {
     public class KnightSpeedScaler : MonoBehaviour
     {
-        private float speedScale = (float)(1 / 1.5f);
+        private float speedScale = (float)(1 / 2f);
         private HeroController hc = HeroController.instance;
         private PlayMakerFSM spellFsm;
         private Rigidbody2D rb;
 
         private Vector2 previousPos;
 
-        public tk2dSpriteAnimator animator;
-
         void Start()
         {
             rb = hc.gameObject.GetComponent<Rigidbody2D>();
 
-            animator = hc.gameObject.GetComponent<tk2dSpriteAnimator>();
-            foreach (var clip in animator.Library.clips)
-            {
-                clip.fps *= speedScale;   // Halve the FPS
-            }
+            
+            // ChangeTk2dAnimationFps(hc.gameObject);
+            // ChangeFpsForAllSpellObjects();
+
+            HeroAnimationFpsManager fpsManager = new();
 
             spellFsm = hc.gameObject.LocateMyFSM("Spell Control");
 
+            ChangeScreamSpeed();
             ChangeQuakeSpeed();
             ChangeHealingSpeed();
 
@@ -57,6 +58,7 @@ namespace FastWorld
             hc.SHADOW_DASH_SPEED *= speedScale;
             hc.SHADOW_DASH_TIME /= speedScale;
             hc.SHADOW_DASH_COOLDOWN /= speedScale;
+            hc.SHADOW_DASH_COOLDOWN -= 0.016f * (1 / speedScale * 10);
             hc.SUPER_DASH_SPEED *= speedScale;
             hc.DASH_COOLDOWN /= speedScale;
             hc.DASH_COOLDOWN_CH /= speedScale;
@@ -102,6 +104,11 @@ namespace FastWorld
             hc.CAST_RECOIL_TIME /= speedScale;
             hc.CAST_RECOIL_VELOCITY *= speedScale;
             hc.WALLSLIDE_CLIP_DELAY /= speedScale;
+
+            spellFsm.AddCustomAction("Can Cast?", () => {
+                Modding.Logger.Log("Cast!!!!");
+                ChangeFpsForAllSpellObjects();
+            });
         }
 
         void Update()
@@ -109,17 +116,59 @@ namespace FastWorld
             ChangeFireballSpeed("Fireball Top");
             ChangeFireballSpeed("Fireball2 Top");
 
-            if (rb.gravityScale != (float)(0.79*(speedScale*speedScale)) && rb.gravityScale != 0)
+            if (rb.gravityScale != (float)(0.79 * (speedScale * speedScale)) && rb.gravityScale != 0)
             {
-                rb.gravityScale = (float)(0.79*(speedScale*speedScale));
-                hc.DEFAULT_GRAVITY =  (float)(0.79*(speedScale*speedScale));
+                rb.gravityScale = (float)(0.79 * (speedScale * speedScale));
+                hc.DEFAULT_GRAVITY = (float)(0.79 * (speedScale * speedScale));
             }
+        }
+
+        private void ChangeFpsForAllSpellObjects()
+        {
+            var spellObj = GameObject.Find("Spells");
+            foreach (Transform t in spellObj.GetComponentsInChildren<Transform>())
+            {
+                var childObj = t.gameObject;
+                Modding.Logger.Log(childObj.name);
+                ChangeTk2dAnimationFps(childObj);
+            }
+        }
+
+        private void ChangeFpsSpeedForSpellsAnimation()
+        {
+            
+        }
+
+        private void ChangeTk2dAnimationFps(GameObject go, float defaultValue = -1)
+        {
+            var animator = go.GetComponent<tk2dSpriteAnimator>();
+            if (animator != null)
+            {
+                foreach (var clip in animator.Library.clips)
+                {
+                    if (defaultValue != -1)
+                        clip.fps = defaultValue * speedScale;
+                    else
+                        clip.fps = clip.fps * speedScale;
+                }
+            }
+        }
+
+        private void ChangeScreamSpeed()
+        {
+            spellFsm.GetAction<Wait>("Scream Burst 1", 10).time = 0.3f / speedScale;
+            spellFsm.GetAction<Wait>("End Roar", 0).time = 0.15f / speedScale;
+
+            spellFsm.GetAction<Wait>("Scream Burst 2", 11).time = 0.3f / speedScale;
+            spellFsm.GetAction<Wait>("End Roar 2", 0).time = 0.15f / speedScale;
+
+            spellFsm.GetAction<Wait>("Scream Burst 3", 10).time = 0.5f / speedScale;
         }
 
         private void ChangeQuakeSpeed()
         {
             spellFsm.GetAction<SetFloatValue>("Q On Ground", 0).floatValue = 11 * speedScale;
-            
+
             spellFsm.GetAction<SetVelocity2d>("Quake1 Down", 6).y = -50f * speedScale;
             spellFsm.GetAction<SetVelocity2d>("Quake2 Down", 6).y = -50f * speedScale;
 
