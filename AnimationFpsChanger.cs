@@ -12,7 +12,7 @@ namespace FastWorld
 
         public AnimationFpsChanger(string objectName)
         {
-            gameObject = GameObject.Find(objectName);
+            gameObject = GameObjectUtils.GetGameObjectFromName(objectName);
             defaultAnimationClipFps = GetCurrentAnimationClipFps();
         }
 
@@ -25,11 +25,11 @@ namespace FastWorld
         public void ReloadFps()
         {
             var animator = gameObject.GetComponent<tk2dSpriteAnimator>();
-            if (animator != null)
+            if (animator != null) 
             {
                 foreach (var animationClipFps in defaultAnimationClipFps)
                 {
-                    animator.GetClipByName(animationClipFps.Key).fps = animationClipFps.Value / Time.timeScale;
+                    animator.GetClipByName(animationClipFps.Key).fps = animationClipFps.Value * FastWorld.KnightSlowness;
                 }
             }
         }
@@ -39,11 +39,14 @@ namespace FastWorld
             Dictionary<string, float> clipFps = new();
             var animator = gameObject.GetComponent<tk2dSpriteAnimator>();
 
+            if (animator == null)
+                return null;
+
             foreach (var clip in animator.Library.clips)
             {
                 if (!clipFps.ContainsKey(clip.name))
                 {
-                    Modding.Logger.Log("Found: " + clip.name);
+                    Modding.Logger.Log(gameObject.name + " - " + clip.name + ": " + clip.fps);
                     clipFps.Add(clip.name, clip.fps);
                 }
             }

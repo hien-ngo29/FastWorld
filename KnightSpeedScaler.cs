@@ -9,14 +9,12 @@ using Satchel;
 using Satchel.Futils;
 using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
-using System.Security.Cryptography;
-using HKMirror.Reflection.InstanceClasses;
 
 namespace FastWorld
 {
+
     public class KnightSpeedScaler : MonoBehaviour
     {
-        private float speedScale = (float)(1 / 2f);
         private HeroController hc = HeroController.instance;
         private PlayMakerFSM spellFsm;
         private Rigidbody2D rb;
@@ -41,69 +39,68 @@ namespace FastWorld
 
             // hc.UNDERWATER_GRAVITY *= 0.5f;
 
-            hc.RUN_SPEED *= speedScale;
-            hc.RUN_SPEED_CH *= speedScale;
-            hc.RUN_SPEED_CH_COMBO *= speedScale;
-            hc.WALK_SPEED *= speedScale;
-            hc.UNDERWATER_SPEED *= speedScale;
-            hc.JUMP_SPEED *= speedScale;
-            hc.JUMP_SPEED_UNDERWATER *= speedScale;
-            hc.MIN_JUMP_SPEED *= speedScale;
-            hc.JUMP_STEPS = Mathf.RoundToInt(hc.JUMP_STEPS / speedScale) - 1;
-            hc.JUMP_STEPS_MIN = Mathf.RoundToInt(hc.JUMP_STEPS_MIN / speedScale) - 1;
-            hc.WJ_KICKOFF_SPEED *= speedScale;
-            hc.DASH_SPEED *= speedScale;
-            hc.DASH_SPEED_SHARP *= speedScale;
-            hc.DASH_TIME /= speedScale;
-            hc.SHADOW_DASH_SPEED *= speedScale;
-            hc.SHADOW_DASH_TIME /= speedScale;
-            hc.SHADOW_DASH_COOLDOWN /= speedScale;
-            hc.SHADOW_DASH_COOLDOWN -= 0.016f * (1 / speedScale * 10);
-            hc.SUPER_DASH_SPEED *= speedScale;
-            hc.DASH_COOLDOWN /= speedScale;
-            hc.DASH_COOLDOWN_CH /= speedScale;
-            hc.WALLSLIDE_SPEED *= speedScale;
-            hc.WALLSLIDE_DECEL *= speedScale;
-            hc.NAIL_CHARGE_TIME_DEFAULT /= speedScale;
-            hc.NAIL_CHARGE_TIME_CHARM /= speedScale;
-            hc.CYCLONE_HORIZONTAL_SPEED *= speedScale;
-            hc.SWIM_ACCEL *= speedScale;
-            hc.SWIM_MAX_SPEED *= speedScale;
-            hc.ATTACK_DURATION /= speedScale;
-            hc.ATTACK_DURATION_CH /= speedScale;
-            hc.ALT_ATTACK_RESET /= speedScale;
-            hc.ATTACK_RECOVERY_TIME /= speedScale;
-            hc.ATTACK_COOLDOWN_TIME /= speedScale;
-            hc.ATTACK_COOLDOWN_TIME_CH /= speedScale;
-            hc.BOUNCE_TIME /= speedScale;
-            hc.BOUNCE_VELOCITY *= speedScale;
-            hc.SHROOM_BOUNCE_VELOCITY *= speedScale;
-            hc.RECOIL_HOR_TIME /= speedScale;
-            hc.RECOIL_HOR_VELOCITY *= speedScale;
-            hc.RECOIL_HOR_VELOCITY_LONG *= speedScale;
-            hc.RECOIL_HOR_STEPS *= speedScale;
-            hc.RECOIL_DOWN_VELOCITY *= speedScale;
-            hc.RUN_PUFF_TIME /= speedScale;
-            hc.BIG_FALL_TIME /= speedScale;
-            hc.HARD_LANDING_TIME /= speedScale;
-            hc.DOWN_DASH_TIME /= speedScale;
-            hc.MAX_FALL_VELOCITY *= speedScale;
-            hc.MAX_FALL_VELOCITY_UNDERWATER *= speedScale;
-            hc.RECOIL_DURATION /= speedScale;
-            hc.RECOIL_DURATION_STAL /= speedScale;
-            hc.RECOIL_VELOCITY *= speedScale;
-            hc.DAMAGE_FREEZE_DOWN /= speedScale;
-            hc.DAMAGE_FREEZE_WAIT /= speedScale;
-            hc.DAMAGE_FREEZE_UP /= speedScale;
-            hc.INVUL_TIME /= speedScale;
-            hc.INVUL_TIME_STAL /= speedScale;
-            hc.INVUL_TIME_PARRY /= speedScale;
-            hc.INVUL_TIME_QUAKE /= speedScale;
-            hc.INVUL_TIME_CYCLONE /= speedScale;
-            hc.CAST_TIME /= speedScale;
-            hc.CAST_RECOIL_TIME /= speedScale;
-            hc.CAST_RECOIL_VELOCITY *= speedScale;
-            hc.WALLSLIDE_CLIP_DELAY /= speedScale;
+            hc.RUN_SPEED *= FastWorld.KnightSlowness;
+            hc.RUN_SPEED_CH *= FastWorld.KnightSlowness;
+            hc.RUN_SPEED_CH_COMBO *= FastWorld.KnightSlowness;
+            hc.WALK_SPEED *= FastWorld.KnightSlowness;
+            hc.UNDERWATER_SPEED *= FastWorld.KnightSlowness;
+            hc.JUMP_SPEED *= FastWorld.KnightSlowness;
+            hc.JUMP_SPEED_UNDERWATER *= FastWorld.KnightSlowness;
+            hc.MIN_JUMP_SPEED *= FastWorld.KnightSlowness;
+            hc.JUMP_STEPS = Mathf.RoundToInt(hc.JUMP_STEPS / FastWorld.KnightSlowness) - 1;
+            hc.JUMP_STEPS_MIN = Mathf.RoundToInt(hc.JUMP_STEPS_MIN / FastWorld.KnightSlowness) - 1;
+            hc.WJ_KICKOFF_SPEED *= FastWorld.KnightSlowness;
+            hc.DASH_SPEED *= FastWorld.KnightSlowness;
+            hc.DASH_SPEED_SHARP *= FastWorld.KnightSlowness;
+            hc.DASH_TIME /= FastWorld.KnightSlowness;
+            hc.SHADOW_DASH_SPEED *= FastWorld.KnightSlowness;
+            hc.SHADOW_DASH_TIME /= FastWorld.KnightSlowness;
+            hc.SHADOW_DASH_COOLDOWN /= FastWorld.KnightSlowness;
+            hc.SUPER_DASH_SPEED *= FastWorld.KnightSlowness;
+            hc.DASH_COOLDOWN /= FastWorld.KnightSlowness;
+            hc.DASH_COOLDOWN_CH /= FastWorld.KnightSlowness;
+            hc.WALLSLIDE_SPEED *= FastWorld.KnightSlowness;
+            hc.WALLSLIDE_DECEL *= FastWorld.KnightSlowness;
+            hc.NAIL_CHARGE_TIME_DEFAULT /= FastWorld.KnightSlowness;
+            hc.NAIL_CHARGE_TIME_CHARM /= FastWorld.KnightSlowness;
+            hc.CYCLONE_HORIZONTAL_SPEED *= FastWorld.KnightSlowness;
+            hc.SWIM_ACCEL *= FastWorld.KnightSlowness;
+            hc.SWIM_MAX_SPEED *= FastWorld.KnightSlowness;
+            hc.ATTACK_DURATION /= FastWorld.KnightSlowness;
+            hc.ATTACK_DURATION_CH /= FastWorld.KnightSlowness;
+            hc.ALT_ATTACK_RESET /= FastWorld.KnightSlowness;
+            hc.ATTACK_RECOVERY_TIME /= FastWorld.KnightSlowness;
+            hc.ATTACK_COOLDOWN_TIME /= FastWorld.KnightSlowness;
+            hc.ATTACK_COOLDOWN_TIME_CH /= FastWorld.KnightSlowness;
+            hc.BOUNCE_TIME /= FastWorld.KnightSlowness;
+            hc.BOUNCE_VELOCITY *= FastWorld.KnightSlowness;
+            hc.SHROOM_BOUNCE_VELOCITY *= FastWorld.KnightSlowness;
+            hc.RECOIL_HOR_TIME /= FastWorld.KnightSlowness;
+            hc.RECOIL_HOR_VELOCITY *= FastWorld.KnightSlowness;
+            hc.RECOIL_HOR_VELOCITY_LONG *= FastWorld.KnightSlowness;
+            hc.RECOIL_HOR_STEPS *= FastWorld.KnightSlowness;
+            hc.RECOIL_DOWN_VELOCITY *= FastWorld.KnightSlowness;
+            hc.RUN_PUFF_TIME /= FastWorld.KnightSlowness;
+            hc.BIG_FALL_TIME /= FastWorld.KnightSlowness;
+            hc.HARD_LANDING_TIME /= FastWorld.KnightSlowness;
+            hc.DOWN_DASH_TIME /= FastWorld.KnightSlowness;
+            hc.MAX_FALL_VELOCITY *= FastWorld.KnightSlowness;
+            hc.MAX_FALL_VELOCITY_UNDERWATER *= FastWorld.KnightSlowness;
+            hc.RECOIL_DURATION /= FastWorld.KnightSlowness;
+            hc.RECOIL_DURATION_STAL /= FastWorld.KnightSlowness;
+            hc.RECOIL_VELOCITY *= FastWorld.KnightSlowness;
+            hc.DAMAGE_FREEZE_DOWN /= FastWorld.KnightSlowness;
+            hc.DAMAGE_FREEZE_WAIT /= FastWorld.KnightSlowness;
+            hc.DAMAGE_FREEZE_UP /= FastWorld.KnightSlowness;
+            hc.INVUL_TIME /= FastWorld.KnightSlowness;
+            hc.INVUL_TIME_STAL /= FastWorld.KnightSlowness;
+            hc.INVUL_TIME_PARRY /= FastWorld.KnightSlowness;
+            hc.INVUL_TIME_QUAKE /= FastWorld.KnightSlowness;
+            hc.INVUL_TIME_CYCLONE /= FastWorld.KnightSlowness;
+            hc.CAST_TIME /= FastWorld.KnightSlowness;
+            hc.CAST_RECOIL_TIME /= FastWorld.KnightSlowness;
+            hc.CAST_RECOIL_VELOCITY *= FastWorld.KnightSlowness;
+            hc.WALLSLIDE_CLIP_DELAY /= FastWorld.KnightSlowness;
 
             spellFsm.AddCustomAction("Can Cast?", () => {
                 Modding.Logger.Log("Cast!!!!");
@@ -116,10 +113,10 @@ namespace FastWorld
             ChangeFireballSpeed("Fireball Top");
             ChangeFireballSpeed("Fireball2 Top");
 
-            if (rb.gravityScale != (float)(0.79 * (speedScale * speedScale)) && rb.gravityScale != 0)
+            if (rb.gravityScale != (float)(0.79 * (FastWorld.KnightSlowness * FastWorld.KnightSlowness)) && rb.gravityScale != 0)
             {
-                rb.gravityScale = (float)(0.79 * (speedScale * speedScale));
-                hc.DEFAULT_GRAVITY = (float)(0.79 * (speedScale * speedScale));
+                rb.gravityScale = (float)(0.79 * (FastWorld.KnightSlowness * FastWorld.KnightSlowness));
+                hc.DEFAULT_GRAVITY = (float)(0.79 * (FastWorld.KnightSlowness * FastWorld.KnightSlowness));
             }
         }
 
@@ -147,44 +144,44 @@ namespace FastWorld
                 foreach (var clip in animator.Library.clips)
                 {
                     if (defaultValue != -1)
-                        clip.fps = defaultValue * speedScale;
+                        clip.fps = defaultValue * FastWorld.KnightSlowness;
                     else
-                        clip.fps = clip.fps * speedScale;
+                        clip.fps = clip.fps * FastWorld.KnightSlowness;
                 }
             }
         }
 
         private void ChangeScreamSpeed()
         {
-            spellFsm.GetAction<Wait>("Scream Burst 1", 10).time = 0.3f / speedScale;
-            spellFsm.GetAction<Wait>("End Roar", 0).time = 0.15f / speedScale;
+            spellFsm.GetAction<Wait>("Scream Burst 1", 10).time = 0.3f / FastWorld.KnightSlowness;
+            spellFsm.GetAction<Wait>("End Roar", 0).time = 0.15f / FastWorld.KnightSlowness;
 
-            spellFsm.GetAction<Wait>("Scream Burst 2", 11).time = 0.3f / speedScale;
-            spellFsm.GetAction<Wait>("End Roar 2", 0).time = 0.15f / speedScale;
+            spellFsm.GetAction<Wait>("Scream Burst 2", 11).time = 0.3f / FastWorld.KnightSlowness;
+            spellFsm.GetAction<Wait>("End Roar 2", 0).time = 0.15f / FastWorld.KnightSlowness;
 
-            spellFsm.GetAction<Wait>("Scream Burst 3", 10).time = 0.5f / speedScale;
+            spellFsm.GetAction<Wait>("Scream Burst 3", 10).time = 0.5f / FastWorld.KnightSlowness;
         }
 
         private void ChangeQuakeSpeed()
         {
-            spellFsm.GetAction<SetFloatValue>("Q On Ground", 0).floatValue = 11 * speedScale;
+            spellFsm.GetAction<SetFloatValue>("Q On Ground", 0).floatValue = 11 * FastWorld.KnightSlowness;
 
-            spellFsm.GetAction<SetVelocity2d>("Quake1 Down", 6).y = -50f * speedScale;
-            spellFsm.GetAction<SetVelocity2d>("Quake2 Down", 6).y = -50f * speedScale;
+            spellFsm.GetAction<SetVelocity2d>("Quake1 Down", 6).y = -50f * FastWorld.KnightSlowness;
+            spellFsm.GetAction<SetVelocity2d>("Quake2 Down", 6).y = -50f * FastWorld.KnightSlowness;
 
-            spellFsm.GetAction<Wait>("Quake1 Land", 15).time = 0.75f / speedScale;
-            spellFsm.GetAction<Wait>("Q2 Land", 14).time = 0.75f / speedScale;
+            spellFsm.GetAction<Wait>("Quake1 Land", 15).time = 0.75f / FastWorld.KnightSlowness;
+            spellFsm.GetAction<Wait>("Q2 Land", 14).time = 0.75f / FastWorld.KnightSlowness;
         }
 
         private void ChangeHealingSpeed()
         {
-            ChangeSpeedValueOfSpell("Time Per MP Drain", 1 / speedScale);
-            ChangeSpeedValueOfSpell("Time Per MP Drain CH", 1 / speedScale);
-            ChangeSpeedValueOfSpell("Time Per MP Drain UnCH", 1 / speedScale);
-            ChangeSpeedValueOfSpell("Focus Start Time", 1 / speedScale);
-            ChangeSpeedValueOfSpell("Grace Time", 1 / speedScale);
+            ChangeSpeedValueOfSpell("Time Per MP Drain", 1 / FastWorld.KnightSlowness);
+            ChangeSpeedValueOfSpell("Time Per MP Drain CH", 1 / FastWorld.KnightSlowness);
+            ChangeSpeedValueOfSpell("Time Per MP Drain UnCH", 1 / FastWorld.KnightSlowness);
+            ChangeSpeedValueOfSpell("Focus Start Time", 1 / FastWorld.KnightSlowness);
+            ChangeSpeedValueOfSpell("Grace Time", 1 / FastWorld.KnightSlowness);
 
-            ChangeSpeedValueOfSpell("Slug Speed R", speedScale);
+            ChangeSpeedValueOfSpell("Slug Speed R", FastWorld.KnightSlowness);
         }
 
         private void ChangeFireballSpeed(string fireballName)
@@ -193,7 +190,7 @@ namespace FastWorld
             if (fireballGO != null)
             {
                 var fireballFsm = fireballGO.LocateMyFSM("Fireball Cast");
-                fireballFsm.GetVariable<FsmFloat>("Fire Speed").Value = fireballFsm.GetVariable<FsmFloat>("Fire Speed").Value * speedScale;
+                fireballFsm.GetVariable<FsmFloat>("Fire Speed").Value = fireballFsm.GetVariable<FsmFloat>("Fire Speed").Value * FastWorld.KnightSlowness;
             }
         }
 

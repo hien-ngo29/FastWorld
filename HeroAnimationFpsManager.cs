@@ -1,18 +1,35 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace FastWorld
 {
     public class HeroAnimationFpsManager
     {
         private AnimationFpsChanger movementAnimation;
-        private AnimationFpsChanger spellAnimation;
+        private List<AnimationFpsChanger> spellAnimations;
 
         public HeroAnimationFpsManager()
         {
-            movementAnimation = new("Knight");
-            movementAnimation.ReloadFps();
+            spellAnimations = new List<AnimationFpsChanger>();
+            foreach (Transform child in GameObject.Find("Spells").transform)
+            {
+                Modding.Logger.Log("GameObject: " + child.gameObject.name);
+                if (child.gameObject.GetComponent<tk2dSpriteAnimator>() != null)
+                    spellAnimations.Add(new AnimationFpsChanger(child.gameObject));
+            }
 
-            spellAnimation = new ("Q Pillar")
+            movementAnimation = new("Knight");
+
+            ReloadFps();
+        }
+
+        public void ReloadFps()
+        {
+            movementAnimation.ReloadFps();
+            foreach (var animation in spellAnimations)
+            {
+                animation.ReloadFps();
+            }
         }
     }
 }
