@@ -32,6 +32,8 @@ namespace FastWorld
             shadowRechargeFsm.GetVariable<FsmFloat>("Shadow Recharge Time").Value = 1.5f / FastWorld.KnightSlowness;
             shadowRechargeFsm.GetAction<FloatSubtract>("Init", 2).subtract = 0.85f / FastWorld.KnightSlowness;
 
+            ChangeSuperdashSpeed();
+
             ChangeScreamSpeed();
             ChangeQuakeSpeed();
             ChangeHealingSpeed();
@@ -117,6 +119,15 @@ namespace FastWorld
                 rb.gravityScale = (float)(0.79 * (FastWorld.KnightSlowness * FastWorld.KnightSlowness));
                 hc.DEFAULT_GRAVITY = (float)(0.79 * (FastWorld.KnightSlowness * FastWorld.KnightSlowness));
             }
+        }
+
+        private void ChangeSuperdashSpeed()
+        {
+            var superdashFsm = hc.gameObject.LocateMyFSM("Superdash");
+            superdashFsm.GetVariable<FsmFloat>("Cancelable Time").Value = 0.2f / FastWorld.KnightSlowness;
+            superdashFsm.GetVariable<FsmFloat>("Charge Time").Value = 0.8f / FastWorld.KnightSlowness;
+            superdashFsm.GetVariable<FsmFloat>("Superdash Speed").Value = 30f * FastWorld.KnightSlowness;
+            superdashFsm.GetVariable<FsmFloat>("Superdash Speed neg").Value = -30f * FastWorld.KnightSlowness;
         }
 
         private void ChangeFpsForAllSpellObjects()
