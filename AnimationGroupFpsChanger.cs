@@ -15,7 +15,6 @@ namespace FastWorld
             animationGroup = new List<AnimationFpsChanger>();
             foreach (Transform child in GameObject.Find(objectName).transform)
             {
-                Modding.Logger.Log("GameObject: " + child.gameObject.name);
                 if (child.gameObject.GetComponent<tk2dSpriteAnimator>() != null)
                     animationGroup.Add(new AnimationFpsChanger(child.gameObject));
             }
@@ -28,7 +27,6 @@ namespace FastWorld
             animationGroup = new List<AnimationFpsChanger>();
             foreach (Transform child in gameObject.transform)
             {
-                Modding.Logger.Log("GameObject: " + child.gameObject.name);
                 if (child.gameObject.GetComponent<tk2dSpriteAnimator>() != null)
                     animationGroup.Add(new AnimationFpsChanger(child.gameObject));
             }

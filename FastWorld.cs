@@ -14,6 +14,7 @@ namespace FastWorld
     {
         // 1 / timescale
         public static float KnightSlowness = 1f;
+        HeroAnimationFpsManager fpsManager;
 
         public FastWorld() : base("FastWorld") { }
 
@@ -43,7 +44,10 @@ namespace FastWorld
 
         private void HeroAwake(On.HeroController.orig_Start orig, HeroController self)
         {
-            orig(self);
+            orig(self);            
+            if (fpsManager == null)
+                fpsManager = new();
+
             if (self.gameObject.GetComponent<KnightSpeedScaler>() == null)
             {
                 KnightSpeedScaler speedScaler = self.gameObject.AddComponent<KnightSpeedScaler>();

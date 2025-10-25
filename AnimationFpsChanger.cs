@@ -13,13 +13,15 @@ namespace FastWorld
         public AnimationFpsChanger(string objectName)
         {
             gameObject = GameObjectUtils.GetGameObjectFromName(objectName);
-            defaultAnimationClipFps = GetCurrentAnimationClipFps();
+            if (defaultAnimationClipFps == null)
+                defaultAnimationClipFps = GetCurrentAnimationClipFps();
         }
 
         public AnimationFpsChanger(GameObject gameObject)
         {
             this.gameObject = gameObject;
-            defaultAnimationClipFps = GetCurrentAnimationClipFps();
+            if (defaultAnimationClipFps == null)
+                defaultAnimationClipFps = GetCurrentAnimationClipFps();
         }
 
         public void ReloadFps()
@@ -46,7 +48,6 @@ namespace FastWorld
             {
                 if (!clipFps.ContainsKey(clip.name))
                 {
-                    Modding.Logger.Log(gameObject.name + " - " + clip.name + ": " + clip.fps);
                     clipFps.Add(clip.name, clip.fps);
                 }
             }

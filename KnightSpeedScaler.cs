@@ -25,7 +25,6 @@ namespace FastWorld
         void Start()
         {
             rb = hc.gameObject.GetComponent<Rigidbody2D>();
-            HeroAnimationFpsManager fpsManager = new();
 
             spellFsm = hc.gameObject.LocateMyFSM("Spell Control");
 
@@ -48,6 +47,9 @@ namespace FastWorld
             hc.JUMP_STEPS = Mathf.RoundToInt(hc.JUMP_STEPS / FastWorld.KnightSlowness) - 1;
             hc.JUMP_STEPS_MIN = Mathf.RoundToInt(hc.JUMP_STEPS_MIN / FastWorld.KnightSlowness) - 1;
             hc.WJ_KICKOFF_SPEED *= FastWorld.KnightSlowness;
+            hc.WJLOCK_STEPS_LONG = Mathf.RoundToInt(hc.WJLOCK_STEPS_LONG / FastWorld.KnightSlowness);
+            hc.WJLOCK_STEPS_SHORT = Mathf.RoundToInt(hc.WJLOCK_STEPS_SHORT / FastWorld.KnightSlowness);
+            hc.WALL_STICKY_STEPS = Mathf.RoundToInt(hc.WALL_STICKY_STEPS / FastWorld.KnightSlowness);
             hc.DASH_SPEED *= FastWorld.KnightSlowness;
             hc.DASH_SPEED_SHARP *= FastWorld.KnightSlowness;
             hc.DASH_TIME /= FastWorld.KnightSlowness;
@@ -101,7 +103,6 @@ namespace FastWorld
             hc.WALLSLIDE_CLIP_DELAY /= FastWorld.KnightSlowness;
 
             spellFsm.AddCustomAction("Can Cast?", () => {
-                Modding.Logger.Log("Cast!!!!");
                 ChangeFpsForAllSpellObjects();
             });
         }
@@ -124,7 +125,6 @@ namespace FastWorld
             foreach (Transform t in spellObj.GetComponentsInChildren<Transform>())
             {
                 var childObj = t.gameObject;
-                Modding.Logger.Log(childObj.name);
                 ChangeTk2dAnimationFps(childObj);
             }
         }
