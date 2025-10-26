@@ -32,6 +32,7 @@ namespace FastWorld
             shadowRechargeFsm.GetVariable<FsmFloat>("Shadow Recharge Time").Value = 1.5f / FastWorld.KnightSlowness;
             shadowRechargeFsm.GetAction<FloatSubtract>("Init", 2).subtract = 0.85f / FastWorld.KnightSlowness;
 
+            ChangeHiveBloodRegenSpeed();
             ChangeSuperdashSpeed();
 
             ChangeScreamSpeed();
@@ -119,6 +120,18 @@ namespace FastWorld
                 rb.gravityScale = (float)(0.79 * (FastWorld.KnightSlowness * FastWorld.KnightSlowness));
                 hc.DEFAULT_GRAVITY = (float)(0.79 * (FastWorld.KnightSlowness * FastWorld.KnightSlowness));
             }
+        }
+
+        private void ChangeHiveBloodRegenSpeed()
+        {
+            GameObject healthGO = GameObjectUtils.GetGameObjectFromName("Health");
+            if (healthGO == null)
+            {
+                Modding.Logger.Log("Health GO is null!");
+            }
+
+            var hiveHealthFsm = healthGO.LocateMyFSM("Hive Health Regen");
+            hiveHealthFsm.GetVariable<FsmFloat>("Recover Time").Value = 5f / FastWorld.KnightSlowness;
         }
 
         private void ChangeSuperdashSpeed()
