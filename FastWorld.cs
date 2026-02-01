@@ -15,6 +15,7 @@ namespace FastWorld
         // 1 / timescale
         public static float KnightSlowness = 1f;
         HeroAnimationFpsManager fpsManager;
+        private TimescaleController timescaleController;
 
         public FastWorld() : base("FastWorld") { }
 
@@ -27,15 +28,17 @@ namespace FastWorld
         {
             Log("Initializing");
 
-            string sanicSaveFile = Path.Combine(Application.persistentDataPath, "Sanic.GlobalSettings.json");
+            timescaleController = new();
 
-            if (File.Exists(sanicSaveFile))
-            {
-                string json = File.ReadAllText(sanicSaveFile);
-                JObject obj = JObject.Parse(json);
-                float speedMultiplier = (float)obj["SpeedMultiplier"];
-                KnightSlowness = 1 / speedMultiplier;
-            }
+            // string sanicSaveFile = Path.Combine(Application.persistentDataPath, "Sanic.GlobalSettings.json");
+
+            // if (File.Exists(sanicSaveFile))
+            // {
+            //     string json = File.ReadAllText(sanicSaveFile);
+            //     JObject obj = JObject.Parse(json);
+            //     float speedMultiplier = (float)obj["SpeedMultiplier"];
+            //     KnightSlowness = 1 / speedMultiplier;
+            // }
 
             On.HeroController.Start += HeroAwake;
 
@@ -44,14 +47,16 @@ namespace FastWorld
 
         private void HeroAwake(On.HeroController.orig_Start orig, HeroController self)
         {
-            orig(self);            
-            if (fpsManager == null)
-                fpsManager = new();
+            orig(self);
+            timescaleController.SetTimeScale(2f);
+            timescaleController.ApplyTimeScaleToGame();
+            // if (fpsManager == null)
+            //     fpsManager = new();
 
-            if (self.gameObject.GetComponent<KnightSpeedScaler>() == null)
-            {
-                KnightSpeedScaler speedScaler = self.gameObject.AddComponent<KnightSpeedScaler>();
-            }
+            // if (self.gameObject.GetComponent<KnightSpeedScaler>() == null)
+            // {
+            //     KnightSpeedScaler speedScaler = self.gameObject.AddComponent<KnightSpeedScaler>();
+            // }
         }
     }
 }
